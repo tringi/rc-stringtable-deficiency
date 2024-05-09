@@ -1,0 +1,35 @@
+# Project: 3rdpartyDLL
+# Makefile created by Dev-C++ 5.11
+
+CPP      = g++.exe
+CC       = gcc.exe
+WINDRES  = windres.exe
+RES      = 3rdpartyDLL_private.res
+OBJ      = 3rdpartyDLL.o $(RES)
+LINKOBJ  = 3rdpartyDLL.o $(RES)
+LIBS     = -L"C:/MinGW64/lib" -L"C:/MinGW64/x86_64-w64-mingw32/lib" -static-libstdc++ -static-libgcc -static -s
+INCS     = -I"C:/MinGW64/include" -I"C:/MinGW64/x86_64-w64-mingw32/include" -I"C:/MinGW64/lib/gcc/x86_64-w64-mingw32/6.2.0/include"
+CXXINCS  = -I"C:/MinGW64/include" -I"C:/MinGW64/x86_64-w64-mingw32/include" -I"C:/MinGW64/lib/gcc/x86_64-w64-mingw32/6.2.0/include" -I"C:/MinGW64/lib/gcc/x86_64-w64-mingw32/6.2.0/include/c++"
+BIN      = ../3rdpartyDLL.dll
+CXXFLAGS = $(CXXINCS) -mtune=bdver1 -msse2 -Os -Wall -Wextra -fverbose-asm -DUNICODE=1 -D_UNICODE=1 -D_NO_W32_PSEUDO_MODIFIERS -DNOMINMAX -march=x86-64 -save-temps=obj
+CFLAGS   = $(INCS) -mtune=bdver1 -msse2 -Os -Wall -Wextra -fverbose-asm -DUNICODE=1 -D_UNICODE=1 -D_NO_W32_PSEUDO_MODIFIERS -DNOMINMAX -march=x86-64 -save-temps=obj
+RM       = rm.exe -f
+DEF      = ../lib3rdpartyDLL.def
+STATIC   = ../lib3rdpartyDLL.a
+
+.PHONY: all all-before all-after clean clean-custom
+
+all: all-before $(BIN) all-after
+
+clean: clean-custom
+	${RM} $(OBJ) $(BIN) $(DEF) $(STATIC)
+
+$(BIN): $(LINKOBJ)
+	$(CPP) -shared $(LINKOBJ) -o $(BIN) $(LIBS) -Wl,--output-def,$(DEF),--out-implib,$(STATIC),--add-stdcall-alias
+
+3rdpartyDLL.o: 3rdpartyDLL.cpp
+	$(CPP) -c 3rdpartyDLL.cpp -o 3rdpartyDLL.o $(CXXFLAGS)
+
+3rdpartyDLL_private.res: 3rdpartyDLL_private.rc 
+	$(WINDRES) -i 3rdpartyDLL_private.rc --input-format=rc -o 3rdpartyDLL_private.res -O coff 
+

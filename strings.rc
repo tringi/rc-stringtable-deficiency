@@ -1,0 +1,9 @@
+STRINGTABLE
+BEGIN
+    0x01234 "string with resource ID 0x01234"
+    0x12345 "string with resource ID 0x12345" // GNU RC will correctly store as 0x12345, MSVC RC will ERRORNEOUSLY and SILENTLY truncate ID to 0x02345 <- this is the problem
+#ifndef TEST_MSVC_PROGRAM
+    0x02345 "string with resource ID 0x02345"
+#endif
+END
+
